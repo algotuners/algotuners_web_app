@@ -1,0 +1,14 @@
+.login-container {
+    width: 350px; /* Adjust the width as needed */
+    margin: 0 auto;
+    text-align: start;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 100px; /* Adjust the margin-top as needed for vertical centering */
+}
+
+.login-container input,
+.login-container button {
+    margin-top: 10px;
+}

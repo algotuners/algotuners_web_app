@@ -1,0 +1,24 @@
+.table-card {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.net-buying, .net-sell {
+    margin-bottom: 8px;
+}
+

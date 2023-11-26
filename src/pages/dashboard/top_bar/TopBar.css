@@ -1,0 +1,48 @@
+/* src/components/TabsPage.css */
+* {
+    margin: 0px;
+}
+
+.top-bar {
+    width: 98%;
+    height: 40px;
+    background-color: #D8D9DA;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tabs-container {
+    display: flex;
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-style: normal;
+    color: #000000;
+}
+
+.tab:hover {
+    background-color: #7F8487;
+}
+
+.tab.active {
+    background-color: #000000; /* Darker shade for active tab */
+    color: #fff;
+}
+
+.logout-button {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #dc3545;
+    color: #fff;
+}

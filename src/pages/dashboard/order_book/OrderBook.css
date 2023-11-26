@@ -1,0 +1,46 @@
+.page-container {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.strategy-config-child-container {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.strategy-config-container h3 {
+    flex: 1;
+    font-size: 18px;
+    font-style: normal;
+    text-align: center;
+}
+
+.strategy-config-container {
+    height: 40px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex: 1;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.strategy-config-input-container {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.divider {
+    margin-top: 10px;
+    height: 2px;
+    width: 100%;
+    background-color: #7F8487;
+}
