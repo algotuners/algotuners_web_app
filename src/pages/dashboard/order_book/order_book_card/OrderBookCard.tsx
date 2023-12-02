@@ -9,13 +9,35 @@ interface OrderBookCardProps {
 const OrderBookCard: React.FC<OrderBookCardProps> = ({orderBookData}) => {
 
     const getBackgroundColor = (order: Order) => {
-        if (order.OrderSizeStrengthInPercentage > 50) {
-            if (order.UnderlyingAssetWillMove === "UP") {
-                return "#B3FFAE"
+        if (order.UnderlyingAssetWillMove === "UP") {
+            if (order.OrderSizeStrengthInPercentage < 25) {
+                return "#FFFFFF"
             }
-            if (order.UnderlyingAssetWillMove === "DOWN") {
-                return "#FF9F9F"
+            if (order.OrderSizeStrengthInPercentage < 45) {
+                return "#FFF7BC"
             }
+            if (order.OrderSizeStrengthInPercentage < 65) {
+                return "#C7DCA7"
+            }
+            if (order.OrderSizeStrengthInPercentage < 85) {
+                return "#99B080"
+            }
+            return "#748E63"
+        }
+        if (order.UnderlyingAssetWillMove === "DOWN") {
+            if (order.OrderSizeStrengthInPercentage < 25) {
+                return "#FFFFFF"
+            }
+            if (order.OrderSizeStrengthInPercentage < 45) {
+                return "#FFF7BC"
+            }
+            if (order.OrderSizeStrengthInPercentage < 65) {
+                return "#FFAB76"
+            }
+            if (order.OrderSizeStrengthInPercentage < 85) {
+                return "#FF7D7D"
+            }
+            return "#FF6969"
         }
         return "#FFFFFF"
     }
