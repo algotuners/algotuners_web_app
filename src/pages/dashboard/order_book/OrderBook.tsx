@@ -3,6 +3,7 @@ import DropdownButton from "../../../components/dropdown_button/DropDownButton";
 import './OrderBook.css'
 import OrderBookCard from "./order_book_card/OrderBookCard";
 import WebSocketService from "../../../utils/WebSocketService";
+import {BASE_URL, ROOT_URL} from "../../../api/auth";
 
 
 export interface DepthItem {
@@ -120,7 +121,7 @@ const OrderBook: React.FC<any> = ({}) => {
 
     useEffect(() => {
         const webSocketService = new WebSocketService();
-        const socketUrl = 'ws://localhost:8090/ws/iobs';
+        const socketUrl = `wss://${ROOT_URL}/ws/iobs`;
         webSocketService.connect(socketUrl, onWebSocketMessage);
         setWebSocketClient(webSocketService)
         return () => {
