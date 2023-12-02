@@ -32,15 +32,15 @@ interface OrderBookRequest {
     option_chain_breadth: number,
 }
 
-type OrderBookDataMap = Record<string, OrderBookData[]>;
+type OrderBookDataMap = Record<string, Record<string, OrderBookData>>;
 type OrderBookRequestMap = Record<string, OrderBookRequest>;
 
 const OrderBook: React.FC<any> = ({}) => {
     const [webSocketServiceClient, setWebSocketClient] = useState<WebSocketService>()
     const options = ['BANK_NIFTY', 'NIFTY 50', "CRUDE_OIL"]
-    const [minOrderSize, setMinOrderSize] = useState(0)
+    const [minOrderSize, setMinOrderSize] = useState(1)
     const [selectedOption, setSelectedOption] = useState(options[0])
-    const [minOrderQuantity, setMinOrderQuantity] = useState(0)
+    const [minOrderQuantity, setMinOrderQuantity] = useState(1)
     const [breadth, setBreadth] = useState(1)
     const [indexOrderBookData, setIndexOrderBookData] = useState<OrderBookDataMap>({})
     const [userConfigs, setUserConfigs] = useState<OrderBookRequestMap>({})
@@ -49,6 +49,7 @@ const OrderBook: React.FC<any> = ({}) => {
     }
 
     const handleOnOnConfigChange = () => {
+        setIndexOrderBookData({})
         setUserConfigs((prevState) => {
             const newConfig = {
                 index_name: selectedOption,
@@ -80,17 +81,37 @@ const OrderBook: React.FC<any> = ({}) => {
         try {
             const parsedData: OrderBookData = JSON.parse(event.data);
             setIndexOrderBookData((prevState) => {
-                let existingData: OrderBookData[] = prevState[parsedData.index_name]
-                if (existingData == null) {
-                    existingData = [parsedData]
+                let existingData: Record<string, OrderBookData> = { ...prevState[parsedData.index_name] };
+                let existingDataForInstrument: OrderBookData = existingData[parsedData.option_name];
+                if (!existingDataForInstrument) {
+                    existingDataForInstrument = parsedData;
                 } else {
-                    existingData?.unshift(parsedData)
+                    let buyOrders: Order[] = []
+                    if (existingDataForInstrument.buy_order_depth) {
+                        buyOrders = parsedData.buy_order_depth?.concat(...existingDataForInstrument.buy_order_depth)
+                    }
+                    let sellOrders: Order[] = []
+                    if (existingDataForInstrument.sell_order_depth) {
+                        sellOrders = parsedData.sell_order_depth?.concat(...existingDataForInstrument.sell_order_depth)
+                    }
+                    if (buyOrders && buyOrders.length > 5) {
+                        buyOrders = buyOrders.slice(0, 5)
+                    }
+                    if (sellOrders && sellOrders.length > 5) {
+                        sellOrders = sellOrders.slice(0, 5)
+                    }
+                    if (buyOrders) {
+                        existingDataForInstrument.buy_order_depth = buyOrders
+                    }
+                    if (sellOrders) {
+                        existingDataForInstrument.sell_order_depth = sellOrders
+                    }
                 }
-                if (existingData.length > 5) { existingData.pop() }
+                existingData[parsedData.option_name] = existingDataForInstrument;
                 return {
                     ...prevState,
                     [parsedData.index_name]: existingData
-                }
+                };
             });
         } catch (error) {
             console.error('Error parsing WebSocket data:', error);
@@ -103,18 +124,24 @@ const OrderBook: React.FC<any> = ({}) => {
         webSocketService.connect(socketUrl, onWebSocketMessage);
         setWebSocketClient(webSocketService)
         return () => {
-            if (webSocketService?.socket?.readyState === 1) { // <-- This is important
+            if (webSocketService?.socket?.readyState === 1) {
                 webSocketService.close();
             }
         };
     }, []);
 
     const OrderBookCardItems = () => {
+        let cards = []
+        let key = 0
+        if (indexOrderBookData && Object.prototype.hasOwnProperty.call(indexOrderBookData, selectedOption)) {
+            for (const optionName in indexOrderBookData[selectedOption]) {
+                const orderBookDataArray = indexOrderBookData[selectedOption][optionName];
+                cards.push(<OrderBookCard key={key} orderBookData={orderBookDataArray} />)
+            }
+        }
         return (
             <div className={'grid-container'}>
-                {indexOrderBookData[selectedOption]?.map((order, index) => (
-                    <OrderBookCard key={index} orderBookData={order} />
-                ))}
+                {cards}
             </div>
         )
     };
@@ -130,25 +157,25 @@ const OrderBook: React.FC<any> = ({}) => {
                                         handleSelectedOption={handleSelectedOption}/>
                     </div>
                     <div className='strategy-config-input-container'>
-                        <p>Min Order Size</p>
+                        <p>Min order count</p>
                         <input
                             type="text"
                             value={minOrderSize}
                             onChange={(e) => {
                                 setMinOrderSize(Number(e.target.value))
                             }}
-                            placeholder="Min order size"
+                            placeholder="Min order count"
                         />
                     </div>
                     <div className='strategy-config-input-container'>
-                        <p>Min Order Quantity</p>
+                        <p>Min avg order quantity</p>
                         <input
                             type="text"
                             value={minOrderQuantity}
                             onChange={(e) => {
                                 setMinOrderQuantity(Number(e.target.value))
                             }}
-                            placeholder="Min order quantity"
+                            placeholder="Min avg order quantity"
                         />
                     </div>
                     <div className='strategy-config-input-container'>

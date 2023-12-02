@@ -18,16 +18,6 @@ class WebSocketService {
         this.socket = new WebSocket(url);
         this.socket.onopen = () => {
             console.log('WebSocket connected');
-            this.sendMessage({
-                indexes_config: {
-                    CRUDE_OIL: {
-                        index_name: 'CRUDE_OIL',
-                        min_order_size: 1,
-                        min_order_quantity: 1,
-                        option_chain_breadth: 1,
-                    },
-                },
-            });
         };
 
         this.socket.onmessage = onMessage
