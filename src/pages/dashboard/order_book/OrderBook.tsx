@@ -138,6 +138,7 @@ const OrderBook: React.FC<any> = ({}) => {
             for (const optionName in indexOrderBookData[selectedOption]) {
                 const orderBookDataArray = indexOrderBookData[selectedOption][optionName];
                 cards.push(<OrderBookCard key={key} orderBookData={orderBookDataArray} />)
+                key +=1
             }
         }
         return (
