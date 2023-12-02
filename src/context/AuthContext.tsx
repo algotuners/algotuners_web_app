@@ -39,7 +39,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [])
 
     const loginAuthProvider = async (phoneNumber: string, otp: string): Promise<Boolean> => {
+        setIsLoading(true)
         const isLoginSuccess = await isLoginSuccessfull(phoneNumber, otp)
+        setIsLoading(false)
         if (isLoginSuccess) {
             setIsAuthenticated(true);
             return true
