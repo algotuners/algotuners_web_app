@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {deleteCookie, getCookie, setCookie} from "../utils/utils";
 
-const BASE_URL = 'http://localhost:8090';
+const BASE_URL = 'https://api.algotuners.com';
 
 export const api = axios.create({
     baseURL: BASE_URL,
