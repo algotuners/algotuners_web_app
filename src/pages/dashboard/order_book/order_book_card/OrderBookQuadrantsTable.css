@@ -1,0 +1,36 @@
+.quadrant-layout {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    width: 100%;
+}
+
+.quadrant {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.quadrant-layout .red {
+    background-color: #f9bcc1;
+}
+
+.quadrant-layout .green {
+    background-color: #acf7a5;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    overflow-y: auto
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}

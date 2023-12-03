@@ -4,6 +4,7 @@ import './OrderBook.css'
 import OrderBookCard from "./order_book_card/OrderBookCard";
 import WebSocketService from "../../../utils/WebSocketService";
 import {BASE_URL, ROOT_URL} from "../../../api/auth";
+import OrderBookQuadrantsTable from "./order_book_card/OrderBookQuadrantsTable";
 
 
 export interface DepthItem {
@@ -46,6 +47,8 @@ const OrderBook: React.FC<any> = ({}) => {
     const [breadth, setBreadth] = useState(1)
     const [indexOrderBookData, setIndexOrderBookData] = useState<OrderBookDataMap>({})
     const [userConfigs, setUserConfigs] = useState<OrderBookRequestMap>({})
+    const [newOrderBookData, setNewOrderBookData] = useState<OrderBookData>()
+    const [viewToggle, setViewToggle] = useState<boolean>(false)
     const handleSelectedOption = (option: string, index: number) => {
         setSelectedOption(option)
     }
@@ -82,6 +85,7 @@ const OrderBook: React.FC<any> = ({}) => {
     const onWebSocketMessage = (event: MessageEvent<any>) => {
         try {
             const parsedData: OrderBookData = JSON.parse(event.data);
+            setNewOrderBookData(parsedData)
             setIndexOrderBookData((prevState) => {
                 let existingData: Record<string, OrderBookData> = { ...prevState[parsedData.index_name] };
                 let existingDataForInstrument: OrderBookData = existingData[parsedData.option_name];
@@ -123,7 +127,7 @@ const OrderBook: React.FC<any> = ({}) => {
 
     useEffect(() => {
         const webSocketService = new WebSocketService();
-        const socketUrl = `wss://${ROOT_URL}/ws/iobs`;
+        const socketUrl = `ws://${ROOT_URL}/ws/mock_index_ticks`;
         webSocketService.connect(socketUrl, onWebSocketMessage);
         setWebSocketClient(webSocketService)
         return () => {
@@ -154,6 +158,7 @@ const OrderBook: React.FC<any> = ({}) => {
         <div className='page-container'>
             <div className='strategy-config-container'>
                 <h3>Set Configuration</h3>
+                <button onClick={() => {setViewToggle(!viewToggle)}}>Toggle View</button>
                 <div className='strategy-config-child-container'>
                     <div className='strategy-config-input-container'>
                         <p>Index</p>
@@ -198,7 +203,8 @@ const OrderBook: React.FC<any> = ({}) => {
                 </div>
             </div>
             <div className='divider'></div>
-            <OrderBookCardItems />
+            {viewToggle && <OrderBookCardItems />}
+            {!viewToggle && <OrderBookQuadrantsTable newOrderBookData={newOrderBookData}/>}
         </div>
     );
 };
