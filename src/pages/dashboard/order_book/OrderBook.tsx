@@ -24,6 +24,7 @@ export interface OrderBookData {
     option_name: string;
     buy_order_depth: Order[];
     sell_order_depth: Order[];
+    timestamp: string
 }
 
 interface OrderBookRequest {
@@ -107,6 +108,7 @@ const OrderBook: React.FC<any> = ({}) => {
                     if (sellOrders) {
                         existingDataForInstrument.sell_order_depth = sellOrders
                     }
+                    existingDataForInstrument.timestamp = parsedData.timestamp
                 }
                 existingData[parsedData.option_name] = existingDataForInstrument;
                 return {

@@ -49,6 +49,7 @@ const OrderBookCard: React.FC<OrderBookCardProps> = ({orderBookData}) => {
                 <table className="six columns buy table-container">
                     <thead>
                     <tr>
+                        <th className="order-price"><span>Time</span></th>
                         <th className="order-price"><span>Bid</span></th>
                         <th className="orders">Cnt</th>
                         <th className="text-right quantity">Size</th>
@@ -60,6 +61,7 @@ const OrderBookCard: React.FC<OrderBookCardProps> = ({orderBookData}) => {
                         const bgColor = getBackgroundColor(depthItem)
                         return (
                             <tr>
+                                <td className="rate">{orderBookData.timestamp.slice(11, 19)}</td>
                                 <td className="rate">{depthItem.DepthItem.price}</td>
                                 <td className="orders" style={{background: bgColor}}>{depthItem.DepthItem.orders}</td>
                                 <td className={"text-right quantity"} style={{background: bgColor}}>{depthItem.OrderSizeStrengthInPercentage}%</td>
@@ -79,7 +81,8 @@ const OrderBookCard: React.FC<OrderBookCardProps> = ({orderBookData}) => {
                 <table className="six columns sell table-container">
                     <thead>
                     <tr>
-                        <th className="order-price"><span>Offer</span></th>
+                        <th className="order-price"><span>Time</span></th>
+                        <th className="order-price"><span>Ask</span></th>
                         <th className="orders">Cnt</th>
                         <th className="text-right quantity">Size</th>
                         <th className="text-right quantity">Dir.</th>
@@ -90,6 +93,7 @@ const OrderBookCard: React.FC<OrderBookCardProps> = ({orderBookData}) => {
                         const bgColor = getBackgroundColor(depthItem)
                         return (
                             <tr>
+                                <td className="rate">{orderBookData.timestamp.slice(11, 19)}</td>
                                 <td className="rate">{depthItem.DepthItem.price}</td>
                                 <td className="orders" style={{background: bgColor}}>{depthItem.DepthItem.orders}</td>
                                 <td className={"text-right quantity"} style={{background: bgColor}}>{depthItem.OrderSizeStrengthInPercentage}%</td>
