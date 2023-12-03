@@ -127,7 +127,8 @@ const OrderBook: React.FC<any> = ({}) => {
 
     useEffect(() => {
         const webSocketService = new WebSocketService();
-        const socketUrl = `wss://${ROOT_URL}/ws/mock_index_ticks`;
+        // const socketUrl = `wss://${ROOT_URL}/ws/mock_index_ticks`;
+        const socketUrl = `wss://${ROOT_URL}/ws/iobs`;
         webSocketService.connect(socketUrl, onWebSocketMessage);
         setWebSocketClient(webSocketService)
         return () => {
