@@ -8,7 +8,7 @@ const OrderBookQuadrantsTable: React.FC<{newOrderBookData: OrderBookData | undef
     const [putBuyTableData, setPutBuyTableData] = useState<string[][]>([])
     const [putSellTableData, setPutSellTableData] = useState<string[][]>([])
     const getTableData = (orderDepth: Order[], timeStamp: string, symbol: string) => {
-        return orderDepth.map((order) => {
+        return orderDepth?.map((order) => {
             return [timeStamp, symbol, order.DepthItem.price.toString(), order.OrderCountStrengthInPercentage.toString(), order.OrderSizeStrengthInPercentage.toString()]
         })
     }
@@ -28,19 +28,19 @@ const OrderBookQuadrantsTable: React.FC<{newOrderBookData: OrderBookData | undef
             const sellOrderDepth = newOrderBookData.sell_order_depth
             const buyTableData = getTableData(buyOrderDepth, timeStamp, symbol)
             const sellTableData = getTableData(sellOrderDepth, timeStamp, symbol)
-            if (buyOrderDepth[0].UnderlyingAssetWillMove == "UP") {
+            if (buyOrderDepth !== null && buyOrderDepth.length > 0 && buyOrderDepth[0].UnderlyingAssetWillMove == "UP" && buyTableData.length > 0) {
                 const newTableData = deleteOldTableData(buyTableData.concat(callBuyTableData))
                 setCallBuyTableData(newTableData)
             }
-            if (buyOrderDepth[0].UnderlyingAssetWillMove == "DOWN") {
+            if (buyOrderDepth !== null && buyOrderDepth.length > 0 && buyOrderDepth[0].UnderlyingAssetWillMove == "DOWN" && buyTableData.length > 0) {
                 const newTableData = deleteOldTableData(buyTableData.concat(putBuyTableData))
                 setPutBuyTableData(newTableData)
             }
-            if (sellOrderDepth[0].UnderlyingAssetWillMove == "UP") {
+            if (sellOrderDepth !== null && sellOrderDepth.length > 0 && sellOrderDepth[0].UnderlyingAssetWillMove == "UP" && sellTableData.length > 0) {
                 const newTableData = deleteOldTableData(sellTableData.concat(putSellTableData))
                 setPutSellTableData(newTableData)
             }
-            if (sellOrderDepth[0].UnderlyingAssetWillMove == "DOWN") {
+            if (sellOrderDepth !== null && sellOrderDepth.length > 0 && sellOrderDepth[0].UnderlyingAssetWillMove == "DOWN" && sellTableData.length > 0) {
                 const newTableData = deleteOldTableData(sellTableData.concat(callSellTableData))
                 setCallSellTableData(newTableData)
             }
