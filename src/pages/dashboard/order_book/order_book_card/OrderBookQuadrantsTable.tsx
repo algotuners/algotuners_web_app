@@ -97,7 +97,9 @@ const Table: React.FC<{ columns: number,  tableData: string[][], headers: string
             {tableData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                     {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} style={{ width: columnWidths[cellIndex], background: getColumnBackgroundColor(cellIndex, cell)}}>{cell}</td>
+                        <td key={cellIndex} style={{ width: columnWidths[cellIndex], background: getColumnBackgroundColor(cellIndex, cell)}}>{
+                            (cellIndex === 3 || cellIndex === 4) ? cell + '%' : cell
+                        }</td>
                     ))}
                 </tr>
             ))}
