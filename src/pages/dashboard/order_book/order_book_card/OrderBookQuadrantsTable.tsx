@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import './OrderBookQuadrantsTable.css';
 import {Order, OrderBookData} from "../OrderBook";
+// @ts-ignore
+import click from "./click.mp3";
+// @ts-ignore
+import ping from "./ping.mp3";
 
 const OrderBookQuadrantsTable: React.FC<{newOrderBookData: OrderBookData | undefined}> = ({newOrderBookData}) => {
     const [callBuyTableData, setCallBuyTableData] = useState<string[][]>([])
@@ -73,9 +77,21 @@ const OrderBookQuadrantsTable: React.FC<{newOrderBookData: OrderBookData | undef
 
 const Table: React.FC<{ columns: number,  tableData: string[][], headers: string[], isBullish: boolean}> = ({ columns, tableData ,headers, isBullish}) => {
     const columnWidths: string[] = ['25%', '25%', '10%', '20%', '20%'] // Add an array of column widths
-    const getColumnBackgroundColor = (cellIndex: number, perc: string) => {
+    const getColumnBackgroundColor = (cellIndex: number, perc: string, rowIndex: number) => {
         if (cellIndex === 3 || cellIndex === 4) {
             const percentage = Math.min(100, Math.max(0, parseInt(perc)));
+            if (parseInt(perc) >= 50 && rowIndex == 0 && cellIndex == 3) {
+                const audio = new Audio(ping); // Use a relative path
+                audio.play().then(() => {
+                    console.log("sound played")
+                });
+            }
+            else if (parseInt(perc) >= 50 && rowIndex == 0 && cellIndex == 4) {
+                const audio = new Audio(click); // Use a relative path
+                audio.play().then(() => {
+                    console.log("sound played")
+                });
+            }
             if (!isBullish) {
                 return `linear-gradient(90deg, #FF6969 ${percentage}%, white ${percentage}%)`;
             }
@@ -97,7 +113,7 @@ const Table: React.FC<{ columns: number,  tableData: string[][], headers: string
             {tableData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                     {row.map((cell, cellIndex) => (
-                        <td key={cellIndex} style={{ width: columnWidths[cellIndex], background: getColumnBackgroundColor(cellIndex, cell)}}>{
+                        <td key={cellIndex} style={{ width: columnWidths[cellIndex], background: getColumnBackgroundColor(cellIndex, cell, rowIndex)}}>{
                             (cellIndex === 3 || cellIndex === 4) ? cell + '%' : cell
                         }</td>
                     ))}
